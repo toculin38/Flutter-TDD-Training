@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-import 'package:flutter_application_1/core/errors/failure.dart';
 import 'package:flutter_application_1/core/utils/typedef.dart';
 import 'package:flutter_application_1/src/authentication/domain/entities/user.dart';
 

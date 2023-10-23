@@ -1,5 +1,5 @@
 import 'package:flutter_application_1/core/utils/typedef.dart';
-import 'package:flutter_application_1/src/authentication/repositories/authentication_repository.dart';
+import 'package:flutter_application_1/src/authentication/domain/repositories/authentication_repository.dart';
 
 class CreateUser {
   const CreateUser(this._repository);
