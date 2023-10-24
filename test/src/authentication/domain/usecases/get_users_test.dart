@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 import 'authentication_repository.mock.dart';
 
 void main() {
-  late AuthoenticationRepository repository;
+  late AuthenticationRepository repository;
   late GetUsers usecase;
 
   setUp(() {

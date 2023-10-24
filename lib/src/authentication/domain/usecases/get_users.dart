@@ -6,7 +6,7 @@ import 'package:flutter_application_1/src/authentication/domain/repositories/aut
 class GetUsers extends UsecaseWithoutParams<List<User>> {
   const GetUsers(this._repository);
 
-  final AuthoenticationRepository _repository;
+  final AuthenticationRepository _repository;
 
   @override
   ResultFuture<List<User>> call() async => _repository.getUsers();

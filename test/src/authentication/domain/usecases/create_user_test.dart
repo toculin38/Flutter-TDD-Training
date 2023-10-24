@@ -14,7 +14,7 @@ import 'authentication_repository.mock.dart';
 
 void main() {
   late CreateUser usecase;
-  late AuthoenticationRepository repository;
+  late AuthenticationRepository repository;
 
   setUp(() {
     repository = MockAuthRepo();

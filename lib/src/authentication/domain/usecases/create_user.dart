@@ -6,7 +6,7 @@ import 'package:flutter_application_1/src/authentication/domain/repositories/aut
 class CreateUser extends UsecaseWithParams<void, CreateUserParams> {
   const CreateUser(this._repository);
 
-  final AuthoenticationRepository _repository;
+  final AuthenticationRepository _repository;
 
   @override
   ResultVoid call(CreateUserParams params) => _repository.createUser(
