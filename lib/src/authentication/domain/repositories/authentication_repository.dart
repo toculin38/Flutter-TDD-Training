@@ -5,7 +5,7 @@ abstract class AuthoenticationRepository {
   const AuthoenticationRepository();
 
   ResultVoid createUser({
-    required String createAt,
+    required String createdAt,
     required String name,
     required String avatar,
   });
