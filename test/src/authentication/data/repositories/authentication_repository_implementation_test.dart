@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_application_1/core/errors/exceptions.dart';
 import 'package:flutter_application_1/core/errors/failure.dart';
-import 'package:flutter_application_1/core/utils/typedef.dart';
 import 'package:flutter_application_1/src/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:flutter_application_1/src/authentication/data/repositories/authentication_repository_implementation.dart';
+import 'package:flutter_application_1/src/authentication/domain/entities/user.dart';
+import 'package:flutter_application_1/src/authentication/domain/repositories/authentication_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -14,11 +13,11 @@ class MockAuthRemoteDataSrc extends Mock
 
 void main() {
   late AuthenticationRemoteDataSource remoteDataSource;
-  late AuthenticationRepositoryImplementation repoImpl;
+  late AuthenticationRepository repository;
 
   setUp(() {
     remoteDataSource = MockAuthRemoteDataSrc();
-    repoImpl = AuthenticationRepositoryImplementation(remoteDataSource);
+    repository = AuthenticationRepositoryImplementation(remoteDataSource);
   });
 
   const tExecption = APIException(
@@ -44,7 +43,7 @@ void main() {
       ).thenAnswer((_) => Future.value());
 
       //act
-      final result = await repoImpl.createUser(
+      final result = await repository.createUser(
           createdAt: createdAt, name: name, avatar: avatar);
 
       //assert
@@ -55,7 +54,7 @@ void main() {
     });
 
     test(
-        'should return a [ServerFailure] when the call to the remote source is unsuccessful',
+        'should return a [APIFailure] when the call to the remote source is unsuccessful',
         () async {
       //arrange
       when(() => remoteDataSource.createUser(
@@ -68,7 +67,7 @@ void main() {
           message: tExecption.message, statusCode: tExecption.statusCode);
 
       //act
-      final result = await repoImpl.createUser(
+      final result = await repository.createUser(
           createdAt: createdAt, name: name, avatar: avatar);
 
       //assert
@@ -89,10 +88,20 @@ void main() {
         (_) async => [],
       );
 
-      final result = await repoImpl.getUsers();
-      expect(result, equals(const Right([])));
-      final verificationResult = verify(() => remoteDataSource.getUsers());
-      verificationResult.called(1);
+      final result = await repository.getUsers();
+      expect(result, isA<Right<Failure, List<User>>>());
+      verify(() => remoteDataSource.getUsers()).called(1);
+      verifyNoMoreInteractions(remoteDataSource);
+    });
+
+    test(
+        'should return a [APIFailure] when the call to the remote source is unsuccessful',
+        () async {
+      when(() => remoteDataSource.getUsers()).thenThrow(tExecption);
+
+      final result = await repository.getUsers();
+      expect(result, equals(Left(APIFailure.fromException(tExecption))));
+      verify(() => remoteDataSource.getUsers()).called(1);
       verifyNoMoreInteractions(remoteDataSource);
     });
   });
